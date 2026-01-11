@@ -16,7 +16,7 @@ import streamlit
 # write out best assignments to csv
 
 def main(argv: Optional[List[str]] = None) -> int:
-    n_iter = 10
+    n_iter = 1000
     n_prefs = 5
     
     session_cap_dict_raw = {}
