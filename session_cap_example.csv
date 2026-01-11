@@ -1,0 +1,17 @@
+session_id,slot,capacity
+1,AM,3
+1,PM,2
+2,AM,4
+2,PM,4
+3,AM,2
+3,PM,3
+4,AM,3
+4,PM,3
+5,AM,5
+5,PM,4
+6,AM,2
+6,PM,2
+7,AM,3
+7,PM,3
+8,AM,4
+8,PM,4

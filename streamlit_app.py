@@ -8,6 +8,7 @@ st.title("Greedy Rando")
 
 user_pref_file = st.file_uploader("User preferences CSV", type="csv")
 session_cap_file = st.file_uploader("Session capacities CSV", type="csv")
+n_iter = st.number_input("Iterations (n_iter)", min_value=1, value=1000, step=1)
 
 if st.button("Run assignments"):
     if not user_pref_file or not session_cap_file:
@@ -21,7 +22,14 @@ if st.button("Run assignments"):
             user_pref_path.write_bytes(user_pref_file.getvalue())
             session_cap_path.write_bytes(session_cap_file.getvalue())
 
-            greedy_rando.main([str(user_pref_path), str(session_cap_path)])
+            greedy_rando.main(
+                [
+                    str(user_pref_path),
+                    str(session_cap_path),
+                    "--n-iter",
+                    str(int(n_iter)),
+                ]
+            )
 
         best_path = Path("best_assignments.csv")
         if best_path.exists():

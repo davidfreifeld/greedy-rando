@@ -16,7 +16,6 @@ import streamlit
 # write out best assignments to csv
 
 def main(argv: Optional[List[str]] = None) -> int:
-    n_iter = 1000
     n_prefs = 5
     
     session_cap_dict_raw = {}
@@ -28,6 +27,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     parser.add_argument("user_pref_csv", type=Path, help="Path to user preferences csv")
     parser.add_argument("session_cap_csv", type=Path, help="Path to session capacities csv")
+    parser.add_argument(
+        "--n-iter",
+        type=int,
+        default=1000,
+        help="Number of iterations to try for the greedy assignment search",
+    )
     args = parser.parse_args(argv)
 
     user_pref_df = pd.read_csv(args.user_pref_csv)
@@ -41,7 +46,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     print("Successfully built session cap dictionary.")
 
     print("Iterating through random assignments...")
-    for i in range(n_iter):
+    for i in range(args.n_iter):
         print(f"Running iteration {i}")
 
         # shuffle the rows of user_pref_df:
@@ -103,7 +108,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if score > score_best:
             score_best = score
             assignments_best = assignments_iter
-            # print("New best score: ", score_best)
+            print("New best score: ", score_best)
 
     print(assignments_best)
     print("Best score after all iterations: ", score_best)
