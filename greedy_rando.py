@@ -71,6 +71,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             if user_id not in assignments_iter:
                 assignments_iter[user_id] = {}
             if user_slot in assignments_iter[user_id]:
+                print(f"Duplicate slot for user in preferences. User: {user_id}, Slot: {user_slot}")
                 raise ValueError(f"Duplicate slot for user in preferences. User: {user_id}, Slot: {user_slot}")
             assignments_iter[user_id][user_slot] = None
             # continue
