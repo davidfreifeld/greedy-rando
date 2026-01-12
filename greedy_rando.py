@@ -85,7 +85,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                 ## make sure user hasn't been assigned to this session already in another slot
                 # print(f"\nChecking assignments for user {user_id} and user_slot {user_slot} and session_id {session_id}")
                 already_assigned = False
-                for other_slot, assigned_session in assignments_iter[user_id].items():
+                for other_slot, assignment_tuple in assignments_iter[user_id].items():
+                    if assignment_tuple is None:
+                        continue
+                    assigned_session, _ = assignment_tuple
                     # print(f"User {user_id} assigned to session {assigned_session} in slot {other_slot}")
                     if assigned_session == session_id:
                         already_assigned = True
@@ -93,7 +96,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 if not already_assigned:
                     capacity = session_cap_dict_iter[session_id][user_slot]
                     if capacity > 0:
-                        assignments_iter[user_id][user_slot] = session_id
+                        assignments_iter[user_id][user_slot] = (session_id, pref)
                         session_cap_dict_iter[session_id][user_slot] -= 1
                         score_diff = n_prefs - pref + 1
                         score += score_diff
@@ -116,8 +119,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     # write out assignments_best to csv
     output_rows = []
     for user_id, slots in assignments_best.items():
-        for slot, session_id in slots.items():
-            output_rows.append({'user_id': user_id, 'slot': slot, 'assigned_session': session_id})
+        for slot, (session_id, pref_assigned) in slots.items():
+            output_rows.append({'user_id': user_id, 'slot': slot, 'assigned_session': session_id, 'preference': pref_assigned})
     output_df = pd.DataFrame(output_rows)
     output_df.to_csv("best_assignments.csv", index=False)
     
