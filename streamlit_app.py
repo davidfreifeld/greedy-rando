@@ -22,14 +22,18 @@ if st.button("Run assignments"):
             user_pref_path.write_bytes(user_pref_file.getvalue())
             session_cap_path.write_bytes(session_cap_file.getvalue())
 
-            greedy_rando.main(
-                [
-                    str(user_pref_path),
-                    str(session_cap_path),
-                    "--n-iter",
-                    str(int(n_iter)),
-                ]
-            )
+            try:
+                greedy_rando.main(
+                    [
+                        str(user_pref_path),
+                        str(session_cap_path),
+                        "--n-iter",
+                        str(int(n_iter)),
+                    ]
+                )
+            except ValueError as exc:
+                st.error(f"Error while assigning sessions: {exc}")
+                st.stop()
 
         best_path = Path("best_assignments.csv")
         if best_path.exists():
